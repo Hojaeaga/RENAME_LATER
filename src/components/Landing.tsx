@@ -1,3 +1,4 @@
+"use client";
 import {
   ArrowRight,
   Bot,
@@ -9,6 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState, useEffect, ReactNode, useRef } from "react";
+import { useFrame } from "./providers/FrameProvider";
 
 type FloatingElementProps = {
   size: string;
@@ -110,10 +112,16 @@ const FloatingCard = ({ children }: FloatingCardProps) => (
 );
 
 export default function Home() {
+  const { context } = useFrame();
   const howItWorksRef = useRef<HTMLDivElement>(null);
   const scrollToSection = () => {
+    console.log("Scrolling to How It Works section");
     howItWorksRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+  const buttonClicked = () => {
+    console.log("Button clicked");
+  };
+  console.log({ context });
   return (
     <main className="min-h-screen w-full bg-gradient-to-br from-[#f6f7f9] to-[#e6e8ec] text-gray-900 font-sans relative overflow-hidden">
       <BackgroundElements />
@@ -124,7 +132,8 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
 
         <p className="text-base md:text-lg font-medium text-gray-600 mb-2 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-purple-500" /> We are here to
+          <Sparkles className="w-4 h-4 text-purple-500" /> Hey there,{" "}
+          {context?.user?.displayName as string}!
         </p>
 
         <h1 className="text-4xl md:text-6xl font-extrabold leading-tight max-w-3xl mb-4">
@@ -145,18 +154,21 @@ export default function Home() {
           .
         </p>
 
-        <Button className="mt-8 px-8 py-4 text-base font-semibold bg-gradient-to-r from-purple-500 to-indigo-600 text-white border-none shadow-lg hover:shadow-xl hover:scale-105 rounded-full flex items-center gap-2 transition-all duration-300">
-          Sign up <ArrowRight className="w-5 h-5" />
+        <Button
+          className="mt-8 px-8 py-4 text-base font-semibold bg-gradient-to-r from-purple-500 to-indigo-600 text-white border-none shadow-lg hover:shadow-xl hover:scale-105 rounded-full flex items-center gap-2 transition-all duration-300"
+          onClick={buttonClicked}
+        >
+          Sign up
         </Button>
 
         {/* Floating tech elements */}
-        <button
-          onClick={scrollToSection}
-          className="absolute bottom-10 left-1/1.2 animate-bounce text-purple-600 hover:text-purple-800 transition"
-          aria-label="Scroll to How It Works"
-        >
-          <ArrowDown className="w-8 h-8" />
-        </button>
+        // <button
+        //   onClick={scrollToSection}
+        //   className="absolute bottom-10 left-1/1.2 animate-bounce text-purple-600 hover:text-purple-800 transition"
+        //   aria-label="Scroll to How It Works"
+        // >
+        //   <ArrowDown className="w-8 h-8" />
+        // </button>
       </section>
 
       {/* How It Works Section */}
